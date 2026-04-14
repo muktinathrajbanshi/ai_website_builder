@@ -28,19 +28,20 @@ const Navbar = () => {
             active:scale-95 hover:bg-indigo-700 transition rounded">
               Get started
             </button>
-          </div>
-
           <button id="open-menu" className="md:hidden active:scale-90 transition" onClick={() => setMenuOpen(true)} >
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
           </button>
+          </div>
+
         </nav>
          {/* Mobile Menu */}
         {menuOpen && (
           <div className="fixed inset-0 z-[100] bg-black/60 text-white backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300">
-            <a href="#products" onClick={() => setMenuOpen(false)}>Products</a>
-            <a href="#resources" onClick={() => setMenuOpen(false)}>Resources</a>
-            <a href="#stories" onClick={() => setMenuOpen(false)}>Stories</a>
-            <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
+            <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+            <Link to="/projects" onClick={() => setMenuOpen(false)}>My Projects</Link>
+            <Link to="/community" onClick={() => setMenuOpen(false)}>Community</Link>
+            <Link to="/pricing" onClick={() => setMenuOpen(false)}>Pricing</Link>
+            
             
             <button className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-slate-100 hover:bg-slate-200 transition text-black rounded-md flex" onClick={() => setMenuOpen(false)} >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
