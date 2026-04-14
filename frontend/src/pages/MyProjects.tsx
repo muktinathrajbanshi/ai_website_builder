@@ -69,7 +69,17 @@ const MyProjects = () => {
                                 to-transparent transition-colors">
                                     <div className="flex items-start justify-between">
                                      <h2 className="text-lg font-medium line-clamp-2">{project.name}</h2>
-                                     <button>Website</button>
+                                     <button className="px-2.5 py-0.5 mt-1 ml-2
+                                     text-xs bg-gray-800 border border-gray-700
+                                     rounded-full">Website</button>
+                                    </div>
+                                    <p className="text-gray-400 mt-1 text-sm 
+                                    line-clamp-2">{project.initial_prompt}</p>
+
+                                    <div onClick={(e) => e.stopPropagation()} className="flex justify-between items-center
+                                    mt-6">
+                                        <span className="text-xs text-gray-500">{new 
+                                        Date(project.createdAt).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                         </div>
