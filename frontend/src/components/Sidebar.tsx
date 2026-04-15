@@ -1,5 +1,7 @@
-import { BotIcon, UserIcon } from "lucide-react";
+import { BotIcon, EyeIcon, UserIcon } from "lucide-react";
 import type { Message, Project, Version } from "../types";
+import { version } from "os";
+import { Link } from "react-router-dom";
 
 interface SidebarProps {
     isMenuOpen: boolean;
@@ -56,16 +58,48 @@ const Sidebar = ({isMenuOpen, project, setProject, isGenerating, setIsGenerating
                         <div key={ver.id} className="w-4/5 mx-auto my-2 p-3
                         rounded-xl bg-gray-800 text-gray-100 shadow flex flex-col
                         gap-2">
-                            <div>
+                            <div className="text-xs font-medium">
                                 code updated <br /> 
                                 <span className="text-gray-500 text-xs font-normal">
                                     {new Date(ver.timestamp).toLocaleString()}
                                 </span>
                             </div>
+                            <div className="flex items-center justify-between">
+                                {project.current_version_index === ver.id 
+                                ? (
+                                    <button className="px-3 py-1 rounded-md
+                                    text-xs bg-gray-700">Current version</button>
+                                )
+                                : (
+                                    <button className="px-3 py-1 rounded-md text-xs
+                                    bg-indigo-500 hover:bg-indigo-600
+                                    text-white">Roll back to this version</button>
+                                )}
+                                <Link target="_blank" to={`/preview/${project.id}/
+                                ${ver.id}`}>
+                                <EyeIcon className="size-6 p-1 bg-gray-700
+                                hover:bg-indigo-500 transition-colors rounded" />
+                                </Link>
+                            </div>
                         </div>
                     )
                 }
             })}
+            {isGenerating && (
+                <div className="flex items-start gap-3 justify-start">
+                    <div className="w-8 h-8 rounded-full bg-linear-to-br
+                    from-indigo-600 to-indigo-700 flex items-center justify-center">
+                        <BotIcon className="size-5 text-white" />
+                    </div>
+                    {/* three dot loader  */}
+                    <div className="flex gap-1.5 h-full items-end">
+                        <span className="size-2 rounded-full animate-bounce
+                        bg-gray-600" style={{animationDelay : "0s"}} />
+                    </div>
+                </div>
+            )
+
+            }
         </div>
         {/* Input area  */}
         <form></form>
