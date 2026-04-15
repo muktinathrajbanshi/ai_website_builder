@@ -1,5 +1,5 @@
-import { BotIcon } from "lucide-react";
-import type { Message, Project } from "../types";
+import { BotIcon, UserIcon } from "lucide-react";
+import type { Message, Project, Version } from "../types";
 
 interface SidebarProps {
     isMenuOpen: boolean;
@@ -37,11 +37,30 @@ const Sidebar = ({isMenuOpen, project, setProject, isGenerating, setIsGenerating
                                 </div>
                             )}
                             <div className={`max-w-[80%] p-2 px-4 rounded-2xl
-                                shadow-sm text-sm mt-5 leading-relaxed ${isUser ? 
-                                    "bg-linear-to-r from-indigo-500 to-indigo-600
-                                    text-white rounded-tr-none" : "rounded-tl-none 
-                                    bg-gray-800 text-gray-100"}`}>
+                                shadow-sm text-sm mt-5 leading-relaxed ${isUser 
+                                    ? "bg-linear-to-r from-indigo-500 to-indigo-600 text-white rounded-tr-none" 
+                                    : "rounded-tl-none bg-gray-800 text-gray-100"}`}>
                                 {msg.content}
+                            </div>
+                            {isUser && (
+                                <div className="w-8 h-8 rounded-full bg-gray-700
+                                flex items-center justify-center">
+                                    <UserIcon className="size-5 text-gray-200" />
+                                </div>
+                            )}
+                        </div>
+                    )
+                } else {
+                    const ver = message as Version;
+                    return (
+                        <div key={ver.id} className="w-4/5 mx-auto my-2 p-3
+                        rounded-xl bg-gray-800 text-gray-100 shadow flex flex-col
+                        gap-2">
+                            <div>
+                                code updated <br /> 
+                                <span className="text-gray-500 text-xs font-normal">
+                                    {new Date(ver.timestamp).toLocaleString()}
+                                </span>
                             </div>
                         </div>
                     )
