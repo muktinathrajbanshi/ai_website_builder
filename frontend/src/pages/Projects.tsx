@@ -30,6 +30,18 @@ const Porjects = () => {
     }, 2000)
   }
 
+  const saveProject = () => {
+
+  }
+
+  const downloadCode = () => {
+
+  }
+
+  const togglePublish = async () => {
+
+  }
+
   useEffect(() => {
     fetchProject() 
   }, [])
@@ -77,7 +89,7 @@ const Porjects = () => {
         {/* right  */}
         <div className="flex items-center justify-end gap-3 flex-1 text-xs
         sm:text-sm">
-          <button disabled={isSaving} className="max-sm:hidden bg-gray-800 hover:bg-gray-700
+          <button onClick={saveProject} disabled={isSaving} className="max-sm:hidden bg-gray-800 hover:bg-gray-700
           text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm
           transition-colors border border-gray-700">
             {isSaving ? <Loader2Icon className="animate-spin" size={16} /> 
@@ -89,12 +101,12 @@ const Porjects = () => {
           border-gray-700 hover:border-gray-500 transition-colors">
             <FullscreenIcon size={16} /> Preview
           </Link>
-          <button className="bg-linear-to-br from-blue-700 to-blue-600
+          <button onClick={downloadCode} className="bg-linear-to-br from-blue-700 to-blue-600
           hover:from-blue-600 hover:to-blue-500 text-white px-3.5 py-1 flex
           items-center gap-2 rounded sm:rounded-sm transition-colors">
             <ArrowBigDownDashIcon size={16} />Download
           </button>
-          <button className="bg-linear-to-br from-indigo-700 to-indigo-600
+          <button onClick={togglePublish} className="bg-linear-to-br from-indigo-700 to-indigo-600
           hover:from-indigo-600 hover:to-indigo-500 text-white px-3.5 py-1 flex
           items-center gap-2 rounded sm:rounded-sm transition-colors">
             {project.isPublished ?
@@ -103,6 +115,12 @@ const Porjects = () => {
            {project.isPublished ? "Unpublish" : "Publish"}
           </button>
         </div>
+      </div>
+      <div className="flex-1 flex overflow-auto">
+            <div>Sidebar</div>
+            <div className="flex-1 p-2 pl-0">
+              project preview
+            </div>
       </div>
     </div>
   ) 
