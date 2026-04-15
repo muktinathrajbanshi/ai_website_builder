@@ -84,13 +84,19 @@ const Porjects = () => {
             : <SaveIcon size={16} /> }
            Save
           </button>
-          <Link target="_blank" to={`/preview/${projectId}`}>
+          <Link target="_blank" to={`/preview/${projectId}`} className="flex
+          items-center gap-2 px-4 py-1 rounded sm:rounded-sm border 
+          border-gray-700 hover:border-gray-500 transition-colors">
             <FullscreenIcon size={16} /> Preview
           </Link>
-          <button>
+          <button className="bg-linear-to-br from-blue-700 to-blue-600
+          hover:from-blue-600 hover:to-blue-500 text-white px-3.5 py-1 flex
+          items-center gap-2 rounded sm:rounded-sm transition-colors">
             <ArrowBigDownDashIcon size={16} />Download
           </button>
-          <button>
+          <button className="bg-linear-to-br from-indigo-700 to-indigo-600
+          hover:from-indigo-600 hover:to-indigo-500 text-white px-3.5 py-1 flex
+          items-center gap-2 rounded sm:rounded-sm transition-colors">
             {project.isPublished ?
             <EyeOffIcon size={16} /> : <EyeIcon size={16} />  
           }
