@@ -1,5 +1,6 @@
 import { forwardRef } from "react"
 import type { Project } from "../types";
+import { iframeScript } from "../assets/assets";
 
 interface ProjectPreviewProps {
     project: Project;
@@ -19,13 +20,21 @@ const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>(
 ({project, isGenerating, device = "desktop", showEditorPanel = true}, ref) => {
     
     const iframeRef = useRef<HTMLIFrameElement>(null)
+
+    const resolutions = {
+        phone: "w-[412px]",
+        tablet: "w-[768px]",
+        desktop: "w-full"
+    }
     
     const injectPreview = (html: string) => {
         if(!html) return "";
         if(!showEditorPanel) return html
 
         if(html.includes("</body>")) {
-            return html.replace()
+            return html.replace("</body>", iframeScript + "</body>")
+        } else {
+            return html + iframeScript;
         }
     }
 
@@ -36,7 +45,9 @@ const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>(
         <>
         <iframe 
         ref={iframeRef}
-        srcDoc=""
+        srcDoc={injectPreview(project.current_code)}
+        className={`h-full max-sm:w-full ${resolutions[device]} mx-auto
+        transition-all`}
         />
         
         </>
