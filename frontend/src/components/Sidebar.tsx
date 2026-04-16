@@ -8,7 +8,7 @@ interface SidebarProps {
     project: Project,
     setProject: (project: Project) => void;
     isGenerating: boolean;
-    SetIsGenerating: (project: boolean) => void;
+    setIsGenerating: (isGenerating: boolean) => void;
 }
 
 const Sidebar = ({isMenuOpen, project, setProject, isGenerating, setIsGenerating} : 
@@ -132,11 +132,12 @@ const Sidebar = ({isMenuOpen, project, setProject, isGenerating, setIsGenerating
         {/* Input area  */}
         <form onSubmit={handleRevisions} className="m-3 relative">
             <div className="flex items-center gap-2">
-                <textarea onChange={(e) => setInput(e.target.value)} value={input} rows={4} placeholder="Describe your website or request
-                changes..." className="flex-1 p-3 rounded-xl resize-none text-sm
+                <textarea onChange={(e) => setInput(e.target.value)} value={input} rows={4} 
+                placeholder="Describe your website or request changes..." 
+                className="flex-1 p-3 rounded-xl resize-none text-sm
                 outline-none ring ring-gray-700 focus:ring-indigo-500 bg-gray-800
-                text-gray-100 placeholder-gray-400 transition-all" disabled=
-                {isGenerating}/>
+                text-gray-100 placeholder-gray-400 transition-all" disabled={isGenerating}/>
+
                 <button disabled={isGenerating || !input.trim()} 
                 className="absolute bottom-2.5 right-2.5 rounded-full bg-linear-to-r
                 from-indigo-500 to-indigo-600 hover:from-indigo-600
