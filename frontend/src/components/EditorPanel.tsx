@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface EditorPanelProps {
@@ -24,11 +25,19 @@ const EditorPanel = ({ selectedElement, onUpdate, onClose }: EditorPanelProps) =
 
     useEffect(() => {
         setValues(selectedElement)
-    }, [])
+    }, [selectedElement])
+
+    if(!selectedElement || !values) return null
 
   return (
-    <div>
-      
+    <div className="absolute top-4 right-4 w-80 bg-white rounded-lg shadow-xl
+    border border-gray-200 p-4 z-50 animate-in fade-in slide-in-from-right-5">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="font-semibold text-gray-800">Edit Element</h3>
+        <button>
+            <X />
+        </button>
+      </div>
     </div>
   )
 }
