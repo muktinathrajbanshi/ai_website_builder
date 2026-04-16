@@ -34,9 +34,16 @@ const EditorPanel = ({ selectedElement, onUpdate, onClose }: EditorPanelProps) =
     border border-gray-200 p-4 z-50 animate-in fade-in slide-in-from-right-5">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-semibold text-gray-800">Edit Element</h3>
-        <button>
-            <X />
+        <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full">
+            <X className="w-4 h-4 text-gray-500" />
         </button>
+      </div>
+      <div className="space-y-4 text-black">
+        <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+                Text Content</label>
+            <textarea value={values.text} />   
+        </div>
       </div>
     </div>
   )
