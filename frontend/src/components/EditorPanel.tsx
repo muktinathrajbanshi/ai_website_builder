@@ -27,7 +27,16 @@ const EditorPanel = ({ selectedElement, onUpdate, onClose }: EditorPanelProps) =
         setValues(selectedElement)
     }, [selectedElement])
 
-    if(!selectedElement || !values) return null
+    if(!selectedElement || !values) return null;
+
+    const handleChange = (field: string, value: string) => {
+        const newValues = {...values, [field]: value};
+        if(field in values.styles) {
+            newValues.styles = {...values.styles, [field]: value}
+        }
+        setValues(newValues)
+        onUpdate({[field]: value});
+    }
 
   return (
     <div className="absolute top-4 right-4 w-80 bg-white rounded-lg shadow-xl
@@ -42,7 +51,9 @@ const EditorPanel = ({ selectedElement, onUpdate, onClose }: EditorPanelProps) =
         <div>
             <label className="block text-xs font-medium text-gray-500 mb-1">
                 Text Content</label>
-            <textarea value={values.text} />   
+            <textarea value={values.text} onChange={(e) => handleChange("text", e.target.value)}
+            className="w-full text-sm p-2 border rounded-md
+            focus:ring-2 focus:ring-indigo-500 outline-none min-h-20" />   
         </div>
       </div>
     </div>
