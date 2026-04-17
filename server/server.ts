@@ -2,6 +2,8 @@
 import express, { Request, Response } from 'express';
 import "dotenv/config";
 import cors from "cors";
+import { toNodeHandler } from 'better-auth/node';
+import { auth } from './lib/auth.js';
 
 const app = express();
 
@@ -11,7 +13,9 @@ const corsOptions = {
 }
 
 // Middleware
-app.use(cors())
+app.use(cors(corsOptions))
+
+app.all('/api/auth/{*any}', toNodeHandler(auth));
 
 const port = process.env.PORT || 3000;
 
