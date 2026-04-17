@@ -7,6 +7,7 @@ import Preview from "./pages/Preview"
 import Community from "./pages/Community"
 import View from "./pages/View"
 import Navbar from "./components/Navbar"
+import { Toaster } from "sonner"
 
 const App = () => {
 
@@ -19,6 +20,7 @@ const App = () => {
 
   return (
     <div>
+      <Toaster />
       {!hideNavbar && <Navbar />}
       
       <Routes>
