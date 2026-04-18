@@ -144,13 +144,17 @@ export const makeRevision = async (req: Request, res: Response) => {
                 current_code: code.replace(/```[a-z]*\n?/gi, "")
                 .replace(/```$/g, "")
                 .trim(),
-                
+                current_version_index: version.id
             }
         })
 
-        res.json({credits: user?.credits})
+        res.json({message: "Changes made successfully"})
 
     } catch (error: any) {
+         await prisma.user.update({
+            where: {id: userId},
+            data: {credits: {increment: 5}}
+        })
         console.log(error.code || error.message);
         res.status(500).json({ message: error.message });
     }
