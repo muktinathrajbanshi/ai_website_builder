@@ -1,6 +1,8 @@
 import { Request, Response } from "express"
 import prisma from "../lib/prisma.js";
 import openai from "../configs/openai.js";
+import { includes } from "better-auth";
+import { versions } from "node:process";
 
 // Controller Function to Make Revision
 export const makeRevision = async (req: Request, res: Response) => {
@@ -210,52 +212,47 @@ export const rollbackToVersion = async (req: Request, res: Response) => {
 }
 
 // Controller Function to Delete a Project
-export const rollbackToVersion = async (req: Request, res: Response) => {
+export const deleteProject = async (req: Request, res: Response) => {
     try {
         const userId = req.userId;
-        if(!userId) {
-            return res.status(401).json({ message: "Unauthorized" });
-        }
-        const { projectId, versionId } = req.params;
-
-        const project = await prisma.websiteProject.findUnique({
+        const { projectId } = req.params;
+        
+        await prisma.websiteProject.delete({
             where: {id: projectId, userId},
-            include: {versions: true}
         })
 
-        if (!project) {
-            return res.status(404).json({ message: "Project not found" });
-        }
-
-        const version = project.versions.find((version) => version.id === versionId);
-
-        if(!version) {
-            return res.status(404).json({ message: "Version not found" });
-        }
-
-        await prisma.websiteProject.update({
-            where: {id: projectId, userId},
-            data: {
-                current_code: version.code,
-                current_version_index: version.id
-            }
-        })
-
-        await prisma.conversation.create({
-            data: {
-                role: "assistant",
-                content: "I've rolled back your website to selected version. You can now preview it",
-                projectId
-            }
-        })
-
-        res.json({ message: "Version rolled back" });
+        res.json({ message: "Project deleted successfully" });
 
     } catch (error : any) {
         console.log(error.code || error.message);
         res.status(500).json({ message: error.message });
     }
-    
 }
 
+// Controller for getting project code for preview
+export const getProjectPreview = async (req: Request, res: Response) => {
+    try {
+        const userId = req.userId;
+        const { projectId } = req.params;
+        
+        if(!userId){
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const project = await prisma.websiteProject.findFirst({
+            where: {id: projectId, userId},
+            include: {versions: true}
+        })
+
+        if(!project) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+
+        res.json({ project });
+
+    } catch (error : any) {
+        console.log(error.code || error.message);
+        res.status(500).json({ message: error.message });
+    }
+}
 
