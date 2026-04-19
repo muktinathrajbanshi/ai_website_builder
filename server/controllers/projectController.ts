@@ -130,6 +130,12 @@ export const makeRevision = async (req: Request, res: Response) => {
                 projectId
             }
         }) 
+
+        await prisma.user.update({
+            where: {id: userId},
+            data: {credits: {increment: 5}}
+        })
+        return;
         }
 
         const version = await prisma.version.create({
