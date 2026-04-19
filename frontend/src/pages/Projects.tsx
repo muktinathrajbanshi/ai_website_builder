@@ -27,7 +27,7 @@ const Porjects = () => {
 
   const fetchProject = async () => {
     try {
-      const { data } = api.get(`/api/user/project/${projectId}`)
+      const { data } = await api.get(`/api/user/project/${projectId}`)
       setProject(data.project)
       setIsGenerating(data.project.current_code ? false : true)
       setLoading(false)
