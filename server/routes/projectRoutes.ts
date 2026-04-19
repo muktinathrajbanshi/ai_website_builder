@@ -13,6 +13,4 @@ projectRouter.get("/published", getPublishedProjects)
 projectRouter.get("/published/:projectId", getProjectById)
 
 
-
-
-
+export default projectRouter
