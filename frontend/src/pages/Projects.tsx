@@ -5,11 +5,14 @@ import { ArrowBigDownDashIcon, EyeIcon, EyeOffIcon, FullscreenIcon, LaptopIcon, 
 import Sidebar from "../components/Sidebar"
 import ProjectPreview, { type ProjectPreviewRef } from "../components/ProjectPreview"
 import api from "@/configs/axios"
+import { authClient } from "@/lib/auth-client"
+import { toast } from "sonner"
 
 const Porjects = () => {
 
   const { projectId } = useParams()
   const navigate = useNavigate()
+  const {data: session, isPending} = authClient.useSession()
 
   const [project, setProject] = useState<Project | null>(null)
   const [loading, setLoading] = useState(true)
@@ -59,6 +62,17 @@ const Porjects = () => {
   const togglePublish = async () => {
 
   }
+
+  useEffect(() => {
+    if(session?.user) {
+      fetchProject();
+    }else if(!isPending && !session?.user){
+      navigate("/")
+      toast("Please login to view your projects")
+    }
+  }, [session?.user])
+
+  
 
   useEffect(() => {
     if(project && !project.current_code) {
