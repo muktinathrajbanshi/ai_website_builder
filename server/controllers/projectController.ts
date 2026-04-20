@@ -74,7 +74,7 @@ export const makeRevision = async (req: Request, res: Response) => {
             ]
         })
 
-        const enhancedPrompt = promptEnhanceResponse.choices[0].message.content;
+        const enhancedPrompt = promptEnhanceResponse.choices?.[0]?.message?.content || message;
 
         await prisma.conversation.create({
             data: {
@@ -236,6 +236,10 @@ export const deleteProject = async (req: Request, res: Response) => {
     try {
         const userId = req.userId;
         const { projectId } = req.params;
+
+        if(!project) {
+             return res.status(404).json({ message: "Project not found" });
+        }
         
         await prisma.websiteProject.delete({
             where: {id: projectId},
@@ -260,7 +264,10 @@ export const getProjectPreview = async (req: Request, res: Response) => {
         }
 
         const project = await prisma.websiteProject.findFirst({
-            where: {id: projectId, userId},
+            where: {
+                id: projectId, 
+                userId: userId
+            },
             include: {versions: true}
         })
 
@@ -331,7 +338,10 @@ export const saveProjectCode = async (req: Request, res: Response) => {
         }
 
         const project = await prisma.websiteProject.findFirst({
-            where: {id: projectId, userId}
+            where: {
+                id: projectId, 
+                userId: userId
+            }
         })
 
         if(!project) {
