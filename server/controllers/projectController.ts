@@ -290,3 +290,39 @@ export const getProjectById = async (req: Request, res: Response) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const saveProjectCode = async (req: Request, res: Response) => {
+    try {
+        const userId = req.userId;
+        const { projectId } = req.params;
+        const { code } = req.body;
+
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const project = await prisma.websiteProject.findFirst({
+            where: {
+                id: projectId,
+                userId
+            }
+        });
+
+        if (!project) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+
+        await prisma.websiteProject.update({
+            where: { id: projectId },
+            data: {
+                current_code: code,
+                current_version_index: ""
+            }
+        });
+
+        res.json({ message: "Saved successfully" });
+
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+};
