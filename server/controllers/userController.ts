@@ -74,7 +74,7 @@ export const createUserProject = async (req: Request, res: Response) => {
 
         // Enhance user prompt
         const promptEnhanceResponse = await openai.chat.completions.create({
-            model: "kwaipilot/kat-coder-pro:free",
+            model: "qwen/qwen3-coder:free",
             messages: [
                 {
                     role: "system",
@@ -121,7 +121,7 @@ export const createUserProject = async (req: Request, res: Response) => {
 
         // Generate website code
         const codeGenerationResponse = await openai.chat.completions.create({
-            model: "kwaipilot/kat-coder-pro:free",
+            model: "qwen/qwen3-coder:free",
             messages: [
                 {
                     role: "system",
@@ -224,7 +224,8 @@ export const getUserProject = async (req: Request, res: Response) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        const {projectId} = req.params;
+        // const {projectId} = req.params;
+            const projectId = req.params.projectId as string;
 
         const project = await prisma.websiteProject.findUnique({
             where: {id: projectId, userId}, //look here muktinath
@@ -273,7 +274,8 @@ export const togglePublish = async (req: Request, res: Response) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        const {projectId} = req.params;
+        // const {projectId} = req.params;
+            const projectId = req.params.projectId as string;
 
         const project = await prisma.websiteProject.findUnique({
             where: {id: projectId, userId} // look here muktinath

@@ -1,15 +1,14 @@
 import { Request, Response } from "express"
 import prisma from "../lib/prisma.js";
 import openai from "../configs/openai.js";
-import { includes } from "better-auth";
-import { versions } from "node:process";
 
 // Controller Function to Make Revision
 export const makeRevision = async (req: Request, res: Response) => {
     const userId = req.userId;
     try {
 
-        const {projectId} = req.params;
+        // const {projectId} = req.params; 
+            const projectId = req.params.projectId as string;
         const {message} = req.body;
 
         
@@ -30,7 +29,7 @@ export const makeRevision = async (req: Request, res: Response) => {
         }
 
         const currentProject = await prisma.websiteProject.findUnique({
-            where: {id: projectId, userId},
+            where: {id: projectId, userId}, //look here muktinath 
             include: {versions: true}
         })
 
@@ -53,7 +52,7 @@ export const makeRevision = async (req: Request, res: Response) => {
 
         // Enhance user prompt
         const promptEnhanceResponse = await openai.chat.completions.create({
-            model: "kwaipilot/kat-coder-pro:free",
+            model: "qwen/qwen3-coder:free",
             messages: [
                 {
                     role: "system",
@@ -95,7 +94,7 @@ export const makeRevision = async (req: Request, res: Response) => {
 
         // Generate website code
         const codeGenerationResponse = await openai.chat.completions.create({
-            model: "kwaipilot/kat-coder-pro:free",
+            model: "qwen/qwen3-coder:free",
             messages: [
                 {
                     role: "system",
@@ -185,10 +184,15 @@ export const rollbackToVersion = async (req: Request, res: Response) => {
         if(!userId) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const { projectId, versionId } = req.params;
+        // const { projectId, versionId } = req.params;
+        const projectId = req.params.projectId;
+        const versionId = req.params.versionId;
 
-        const project = await prisma.websiteProject.findUnique({
-            where: {id: projectId, userId},
+        const project = await prisma.websiteProject.findFirst({
+            where: {
+                id: projectId, 
+                userId: userId
+            },  //look here muktinath
             include: {versions: true}
         })
 
@@ -203,7 +207,7 @@ export const rollbackToVersion = async (req: Request, res: Response) => {
         }
 
         await prisma.websiteProject.update({
-            where: {id: projectId, userId},
+            where: {id: projectId},
             data: {
                 current_code: version.code,
                 current_version_index: version.id
@@ -234,7 +238,7 @@ export const deleteProject = async (req: Request, res: Response) => {
         const { projectId } = req.params;
         
         await prisma.websiteProject.delete({
-            where: {id: projectId, userId},
+            where: {id: projectId},
         })
 
         res.json({ message: "Project deleted successfully" });
@@ -326,7 +330,7 @@ export const saveProjectCode = async (req: Request, res: Response) => {
             return res.status(400).json({ message: "Code is required" });
         }
 
-        const project = await prisma.websiteProject.findUnique({
+        const project = await prisma.websiteProject.findFirst({
             where: {id: projectId, userId}
         })
 
