@@ -103,6 +103,15 @@ export const createUserProject = async (req: Request, res: Response) => {
 
         const enhancedPrompt = promptEnhanceResponse.choices[0].message.content;
 
+        if(!code) {
+            await prisma.conversation.create({
+                data: 
+                role: "assistant",
+                content: "Unable to generate the code, please try again",
+                projectId: project.id
+            })
+        }
+
         await prisma.conversation.create({
             data: {
                 role: "assistant",

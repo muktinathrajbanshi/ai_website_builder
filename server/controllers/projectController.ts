@@ -56,7 +56,7 @@ export const makeRevision = async (req: Request, res: Response) => {
 
         // Enhance prompt
         const promptEnhanceResponse = await openai.chat.completions.create({
-            model: "qwen/qwen3-coder:free",
+            model: "kwaipilot/kat-coder-pro:free",
             messages: [
                 {
                     role: "system",
@@ -82,7 +82,7 @@ export const makeRevision = async (req: Request, res: Response) => {
 
         // Generate code
         const codeResponse = await openai.chat.completions.create({
-            model: "qwen/qwen3-coder:free",
+            model: "kwaipilot/kat-coder-pro:free",
             messages: [
                 {
                     role: "system",
